@@ -1,0 +1,178 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Edit Profile - AI Study Assistant</title>
+
+    <link rel="stylesheet"
+          href="{% static 'css/style.css' %}?v=22">
+</head>
+
+<body class="edit-profile-page">
+
+    <!-- NAVBAR -->
+
+    <nav class="edit-profile-navbar">
+
+        <div class="edit-profile-brand">
+            AI Study Assistant
+        </div>
+
+        <div class="edit-profile-nav">
+
+            <a href="{% url 'dashboard' %}">
+                Dashboard
+            </a>
+
+            <a href="{% url 'profile' %}">
+                Profile
+            </a>
+
+            <a href="{% url 'logout' %}">
+                Logout
+            </a>
+
+        </div>
+
+    </nav>
+
+
+    <!-- MAIN -->
+
+    <main class="edit-profile-container">
+
+        <div class="edit-profile-header">
+
+            <span class="edit-profile-badge">
+                ✏️ Account
+            </span>
+
+            <h1>
+                Edit Profile
+            </h1>
+
+            <p>
+                Update your account information.
+            </p>
+
+        </div>
+
+
+        <!-- FORM CARD -->
+
+        <div class="edit-profile-card">
+
+            <div class="edit-profile-icon">
+                👤
+            </div>
+
+            <form method="POST">
+
+                {% csrf_token %}
+
+
+                <!-- USERNAME -->
+
+                <div class="edit-field">
+
+                    <label for="username">
+                        Username
+                    </label>
+
+                    <input
+                        type="text"
+                        id="username"
+                        name="username"
+                        value="{{ user.username }}"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- EMAIL -->
+
+                <div class="edit-field">
+
+                    <label for="email">
+                        Email Address
+                    </label>
+
+                    <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        value="{{ user.email }}"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- BUTTONS -->
+
+                <div class="edit-profile-actions">
+
+                    <button
+                        type="submit"
+                        class="save-profile-button">
+
+                        ✓ Save Changes
+
+                    </button>
+
+                    <a
+                        href="{% url 'profile' %}"
+                        class="cancel-profile-button">
+
+                        Cancel
+
+                    </a>
+
+                </div>
+
+            </form>
+
+        </div>
+
+
+        <!-- SECURITY CARD -->
+
+        <div class="security-card">
+
+            <div class="security-icon">
+                🔒
+            </div>
+
+            <div>
+
+                <strong>
+                    Want to change your password?
+                </strong>
+
+                <p>
+                    Update your password from the
+                    account security settings.
+                </p>
+
+                <a href="{% url 'change_password' %}">
+                    Change Password →
+                </a>
+
+            </div>
+
+        </div>
+
+
+    </main>
+
+</body>
+
+</html>

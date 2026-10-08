@@ -1,0 +1,334 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Dashboard - AI Study Assistant</title>
+
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}?v=11" />
+  </head>
+
+  <body>
+    <div class="app-layout">
+      <!-- =========================
+             Sidebar
+        ========================== -->
+
+      <aside class="sidebar">
+        <div class="sidebar-logo">
+          <h2>AI Study Assistant</h2>
+        </div>
+
+        <nav class="sidebar-nav">
+          <a href="{% url 'dashboard' %}" class="sidebar-link active">
+            <span>🏠</span>
+            <span>Dashboard</span>
+          </a>
+
+          <a href="{% url 'upload_notes' %}" class="sidebar-link">
+            <span>📄</span>
+            <span>Upload Notes</span>
+          </a>
+
+          <a href="{% url 'saved_summaries' %}" class="sidebar-link">
+            <span>💾</span>
+            <span>Saved Summaries</span>
+          </a>
+
+          <a href="{% url 'profile' %}" class="sidebar-link">
+            <span>👤</span>
+            <span>Profile</span>
+          </a>
+        </nav>
+
+        <div class="sidebar-bottom">
+          <a href="{% url 'logout' %}" class="sidebar-link">
+            <span>🚪</span>
+            <span>Logout</span>
+          </a>
+        </div>
+      </aside>
+
+      <!-- =========================
+             Main Content
+        ========================== -->
+
+      <main class="main-content">
+        <!-- Top Bar -->
+
+        <header class="topbar">
+          <div>
+            <h3>Dashboard</h3>
+          </div>
+
+          <div class="user-info">
+            <span>👤</span>
+            <span>{{ user.username }}</span>
+          </div>
+        </header>
+
+        <!-- Welcome Section -->
+
+        <section class="welcome-section">
+          <div>
+            <h1>Welcome back, {{ user.username }} 👋</h1>
+
+            <p>Manage your study notes and generate AI-powered summaries.</p>
+          </div>
+        </section>
+
+        <!-- =========================
+                 Statistics
+            ========================== -->
+
+        <section class="stats-container">
+          <div class="stat-card">
+            <div class="stat-icon">📄</div>
+
+            <div>
+              <h3>Uploaded Notes</h3>
+              <p>{{ notes_count }}</p>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon">💾</div>
+
+            <div>
+              <h3>Saved Summaries</h3>
+              <p>{{ saved_count }}</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- =========================
+                 Quick Actions
+            ========================== -->
+
+        <section class="quick-actions">
+          <div class="section-header">
+            <div>
+              <h2>Quick Actions</h2>
+              <p>Get started with your study materials.</p>
+            </div>
+          </div>
+
+          <div class="action-container">
+            <a href="{% url 'upload_notes' %}" class="primary-button">
+              📄 Upload New Notes
+            </a>
+
+            <a href="{% url 'saved_summaries' %}" class="secondary-button">
+              💾 View Saved Summaries
+            </a>
+          </div>
+        </section>
+
+        <!-- =========================
+                 Uploaded Notes
+            ========================== -->
+
+        <section class="notes-section">
+          <form method="GET" class="notes-filter">
+            <input
+              type="text"
+              name="search"
+              placeholder="Search notes..."
+              value="{{ search_query }}"
+            />
+
+            <select name="file_type">
+              <option value="">All File Types</option>
+
+              <option
+                value=".pdf"
+                {%
+                if
+                file_type=""
+                =".pdf"
+                %}selected{%
+                endif
+                %}
+              >
+                PDF
+              </option>
+
+              <option
+                value=".docx"
+                {%
+                if
+                file_type=""
+                =".docx"
+                %}selected{%
+                endif
+                %}
+              >
+                DOCX
+              </option>
+
+              <option
+                value=".txt"
+                {%
+                if
+                file_type=""
+                =".txt"
+                %}selected{%
+                endif
+                %}
+              >
+                TXT
+              </option>
+            </select>
+
+            <select name="sort">
+              <option
+                value="newest"
+                {%
+                if
+                sort=""
+                ="newest"
+                %}selected{%
+                endif
+                %}
+              >
+                Newest First
+              </option>
+
+              <option
+                value="oldest"
+                {%
+                if
+                sort=""
+                ="oldest"
+                %}selected{%
+                endif
+                %}
+              >
+                Oldest First
+              </option>
+            </select>
+
+            <button type="submit">🔎 Search</button>
+          </form>
+          <div class="section-header">
+            <div>
+              <h2>Your Uploaded Notes</h2>
+
+              <p>Generate and compare AI summaries from your notes.</p>
+            </div>
+          </div>
+
+          {% for note in notes %}
+
+         <div class="note-card">
+
+    <div class="note-main">
+
+        <div class="note-icon">
+            📄
+        </div>
+
+        <div class="note-info">
+            <h3>{{ note.title }}</h3>
+
+            <p class="note-meta">
+                Uploaded {{ note.uploaded_at|date:"M d, Y • h:i A" }}
+            </p>
+
+            <span class="note-file">
+                {{ note.uploaded_file.name|slice:"-4:"|upper }} File
+            </span>
+        </div>
+
+    </div>
+
+
+    <div class="note-controls">
+
+        <a href="{% url 'view_note' note.id %}"
+           class="view-note-btn">
+            👁 View Note
+        </a>
+
+
+        <div class="ai-controls">
+
+            <span class="ai-label">
+                AI Summary
+            </span>
+
+            <div class="ai-row">
+
+                <form method="GET"
+                      action="{% url 'generate_gemini_summary' note.id %}"
+                      class="ai-form">
+
+                    <select name="length">
+                        <option value="short">Short</option>
+                        <option value="medium" selected>Medium</option>
+                        <option value="detailed">Detailed</option>
+                    </select>
+
+                    <button type="submit"
+                            class="ai-button">
+                        🤖 Gemini
+                    </button>
+
+                </form>
+
+
+                <form method="GET"
+                      action="{% url 'generate_openai_summary' note.id %}"
+                      class="ai-form">
+
+                    <select name="length">
+                        <option value="short">Short</option>
+                        <option value="medium" selected>Medium</option>
+                        <option value="detailed">Detailed</option>
+                    </select>
+
+                    <button type="submit"
+                            class="ai-button">
+                        🤖 OpenAI
+                    </button>
+
+                </form>
+
+            </div>
+
+        </div>
+
+
+        <a href="{% url 'compare_summaries' note.id %}"
+           class="compare-button">
+            ⚖ Compare Summaries
+        </a>
+
+    </div>
+
+</div>
+
+          {% empty %}
+
+          <div class="empty-state">
+            <div class="empty-icon">📄</div>
+
+            <h3>No notes uploaded yet</h3>
+
+            <p>
+              Upload your first study note to start generating AI summaries.
+            </p>
+
+            <a href="{% url 'upload_notes' %}" class="primary-button">
+              Upload Your First Note
+            </a>
+          </div>
+
+          {% endfor %}
+        </section>
+      </main>
+    </div>
+  </body>
+</html>

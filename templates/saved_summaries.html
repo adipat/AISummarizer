@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Saved Summaries - AI Study Assistant</title>
+
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+
+<body>
+
+    <nav>
+        <h2>AI Study Assistant</h2>
+
+        <div>
+            <a href="{% url 'dashboard' %}">Dashboard</a>
+            <a href="{% url 'logout' %}">Logout</a>
+        </div>
+    </nav>
+
+    <div class="summary-container">
+
+        <h1>Saved Summaries</h1>
+
+        {% if saved_summaries %}
+
+            {% for saved in saved_summaries %}
+
+                <div class="summary-box">
+
+                    <h2>
+                        {{ saved.summary.uploaded_note.title }}
+                    </h2>
+
+                    <p>
+                        AI Model: {{ saved.summary.ai_model }}
+                    </p>
+
+                    <p>
+                        Saved at: {{ saved.saved_at }}
+                    </p>
+
+                    <hr>
+
+                    <div class="summary-text">
+                        {{ saved.summary.summary_text }}
+                    </div>
+                  <div class="summary-actions">
+
+    <a href="{% url 'download_summary' saved.summary.id %}">
+        <button type="button">Download Summary</button>
+    </a>
+
+    <form action="{% url 'delete_saved_summary' saved.id %}" method="POST">
+        {% csrf_token %}
+        <button type="submit">Delete Summary</button>
+    </form>
+
+</div>
+
+                 
+
+                </div>
+
+                <br>
+
+            {% endfor %}
+
+        {% else %}
+
+            <p>You haven't saved any summaries yet.</p>
+
+        {% endif %}
+
+        <br>
+
+        <a href="{% url 'dashboard' %}">
+            <button type="button">
+                Back to Dashboard
+            </button>
+        </a>
+
+    </div>
+
+</body>
+
+</html>

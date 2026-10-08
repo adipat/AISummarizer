@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>AI Summary - AI Study Assistant</title>
+
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+
+<body>
+
+    <nav>
+        <h2>AI Study Assistant</h2>
+
+        <div>
+            <a href="{% url 'dashboard' %}">Dashboard</a>
+            <a href="{% url 'logout' %}">Logout</a>
+        </div>
+    </nav>
+
+
+    <div class="summary-container">
+
+        <h1>AI Summary</h1>
+
+        <h2>{{ note.title }}</h2>
+
+        <p>
+            AI Model: {{ summary.ai_model }}
+        </p>
+
+
+    <div class="summary-box">
+       <h3>Generated Summary</h3>
+
+    <div class="summary-text">
+        {{ summary.summary_text }}
+    </div>
+    </div>
+
+        <p>
+            Generated at: {{ summary.generated_at }}
+        </p>
+        <form action="{% url 'save_summary' summary.id %}" method="POST">
+            {% csrf_token %}
+
+            <button type="submit">
+             Save Summary
+            </button>
+
+
+        <a href="{% url 'dashboard' %}">
+            <button type="button">
+                Back to Dashboard
+            </button>
+        </a>
+
+    </div>
+
+</body>
+
+</html>

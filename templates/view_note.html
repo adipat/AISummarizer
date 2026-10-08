@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>{{ note.title }} - AI Study Assistant</title>
+
+    {% load static %}
+
+    <link rel="stylesheet"
+          href="{% static 'css/style.css' %}?v=4">
+
+</head>
+
+<body>
+
+    <nav>
+
+        <h2>
+            AI Study Assistant
+        </h2>
+
+        <div>
+
+            <a href="{% url 'dashboard' %}">
+                Dashboard
+            </a>
+
+            <a href="{% url 'profile' %}">
+                Profile
+            </a>
+
+            <a href="{% url 'logout' %}">
+                Logout
+            </a>
+
+        </div>
+
+    </nav>
+
+
+    <div class="summary-container">
+
+        <h1>
+            {{ note.title }}
+        </h1>
+
+        <p>
+            Uploaded:
+            {{ note.uploaded_at }}
+        </p>
+
+        <hr>
+
+
+        <div class="summary-box">
+
+            <h3>
+                Note Content
+            </h3>
+
+            <div class="summary-text">
+                {{ note.extracted_text }}
+            </div>
+
+        </div>
+
+
+        <br>
+<div class="summary-actions">
+
+    <a href="{% url 'download_note' note.id %}">
+        <button type="button">
+            ⬇ Download Original Note
+        </button>
+    </a>
+
+    <form
+        action="{% url 'delete_note' note.id %}"
+        method="POST"
+        onsubmit="return confirm('Are you sure you want to delete this note?');"
+    >
+        {% csrf_token %}
+
+        <button type="submit">
+            🗑 Delete Note
+        </button>
+    </form>
+
+    <a href="{% url 'dashboard' %}">
+        <button type="button">
+            ← Back to Dashboard
+        </button>
+    </a>
+
+</div>
+
+    </div>
+
+</body>
+
+</html>

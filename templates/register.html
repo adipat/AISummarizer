@@ -1,0 +1,367 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Create Account | AI Assist Notes Summarizer</title>
+
+    <link rel="stylesheet" href="{% static 'css/style.css' %}?v=12">
+<link rel="stylesheet" href="{% static 'css/register.css' %}?v=1">
+</head>
+
+<body class="register-page">
+
+    <div class="register-wrapper">
+
+        <!-- Left Branding -->
+        <div class="register-brand">
+
+            <div class="register-logo">
+                <span>AI</span>
+            </div>
+
+            <h1>AI Assist</h1>
+
+            <p class="register-brand-title">
+                Notes Summarizer
+            </p>
+
+            <p class="register-description">
+                Study smarter with AI-powered summaries.
+                Upload your notes, compare AI results and
+                keep your important summaries in one place.
+            </p>
+
+            <div class="register-benefits">
+
+                <div class="register-benefit">
+                    <div class="benefit-icon">✦</div>
+                    <div>
+                        <strong>Smart summaries</strong>
+                        <p>Turn lengthy notes into easy-to-study content.</p>
+                    </div>
+                </div>
+
+                <div class="register-benefit">
+                    <div class="benefit-icon">✓</div>
+                    <div>
+                        <strong>Multiple AI models</strong>
+                        <p>Generate and compare different AI summaries.</p>
+                    </div>
+                </div>
+
+                <div class="register-benefit">
+                    <div class="benefit-icon">↗</div>
+                    <div>
+                        <strong>Save your work</strong>
+                        <p>Keep your favourite summaries for later.</p>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Registration Card -->
+        <div class="register-card">
+
+            <div class="register-header">
+
+                <div class="register-mobile-logo">
+                    <span>AI</span>
+                </div>
+
+                <h2>Create your account</h2>
+
+                <p>
+                    Start studying smarter with AI.
+                </p>
+
+            </div>
+
+
+            {% if messages %}
+                <div class="register-messages">
+
+                    {% for message in messages %}
+
+                        <div class="register-message">
+                            {{ message }}
+                        </div>
+
+                    {% endfor %}
+
+                </div>
+            {% endif %}
+
+
+            <form method="POST" class="register-form">
+
+                {% csrf_token %}
+
+
+                <!-- Username -->
+                <div class="register-form-group">
+
+                    <label for="username">
+                        Username
+                    </label>
+
+                    <div class="register-input-wrapper">
+
+                        <span class="register-input-icon">◉</span>
+
+                        <input
+                            type="text"
+                            id="username"
+                            name="username"
+                            placeholder="Choose a username"
+                            minlength="8"
+                            maxlength="20"
+                            autocomplete="username"
+                            required
+                        >
+
+                    </div>
+
+                    <p class="field-hint">
+                        8–20 characters · At least one letter · Numbers and _ allowed
+                    </p>
+
+                </div>
+
+
+                <!-- Email -->
+                <div class="register-form-group">
+
+                    <label for="email">
+                        Email Address
+                    </label>
+
+                    <div class="register-input-wrapper">
+
+                        <span class="register-input-icon">@</span>
+
+                        <input
+                            type="email"
+                            id="email"
+                            name="email"
+                            placeholder="you@example.com"
+                            autocomplete="email"
+                            required
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <!-- Password -->
+                <div class="register-form-group">
+
+                    <label for="password">
+                        Password
+                    </label>
+
+                    <div class="register-input-wrapper">
+
+                        <span class="register-input-icon">●</span>
+
+                        <input
+                            type="password"
+                            id="password"
+                            name="password"
+                            placeholder="Create a strong password"
+                            autocomplete="new-password"
+                            required
+                            oninput="checkPasswordStrength()"
+                        >
+
+                        <button
+                            type="button"
+                            class="register-show-password"
+                            onclick="toggleRegisterPassword('password', this)"
+                        >
+                            Show
+                        </button>
+
+                    </div>
+
+                    <div class="password-strength">
+
+                        <div class="strength-bar">
+                            <span id="strength-fill"></span>
+                        </div>
+
+                        <p id="strength-text">
+                            Password strength
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Confirm Password -->
+                <div class="register-form-group">
+
+                    <label for="confirm_password">
+                        Confirm Password
+                    </label>
+
+                    <div class="register-input-wrapper">
+
+                        <span class="register-input-icon">●</span>
+
+                        <input
+                            type="password"
+                            id="confirm_password"
+                            name="confirm_password"
+                            placeholder="Re-enter your password"
+                            autocomplete="new-password"
+                            required
+                        >
+
+                        <button
+                            type="button"
+                            class="register-show-password"
+                            onclick="toggleRegisterPassword('confirm_password', this)"
+                        >
+                            Show
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Submit -->
+                <button
+                    type="submit"
+                    class="register-button"
+                >
+                    Create Account
+                    <span>→</span>
+                </button>
+
+            </form>
+
+
+            <!-- Login -->
+            <div class="register-login">
+
+                <p>
+                    Already have an account?
+                </p>
+
+                <a href="{% url 'login' %}">
+                    Login
+                    <span>→</span>
+                </a>
+
+            </div>
+
+
+            <div class="register-home">
+
+                <a href="{% url 'home' %}">
+                    ← Back to home
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <script>
+
+        function toggleRegisterPassword(id, button) {
+
+            const input = document.getElementById(id);
+
+            if (input.type === "password") {
+
+                input.type = "text";
+                button.textContent = "Hide";
+
+            } else {
+
+                input.type = "password";
+                button.textContent = "Show";
+
+            }
+
+        }
+
+
+        function checkPasswordStrength() {
+
+            const password =
+                document.getElementById("password").value;
+
+            const fill =
+                document.getElementById("strength-fill");
+
+            const text =
+                document.getElementById("strength-text");
+
+            let strength = 0;
+
+            if (password.length >= 8) {
+                strength++;
+            }
+
+            if (/[A-Z]/.test(password)) {
+                strength++;
+            }
+
+            if (/[0-9]/.test(password)) {
+                strength++;
+            }
+
+            if (/[^A-Za-z0-9]/.test(password)) {
+                strength++;
+            }
+
+
+            if (password.length === 0) {
+
+                fill.style.width = "0%";
+                text.textContent = "Password strength";
+
+            } else if (strength <= 1) {
+
+                fill.style.width = "25%";
+                text.textContent = "Weak password";
+
+            } else if (strength === 2) {
+
+                fill.style.width = "50%";
+                text.textContent = "Fair password";
+
+            } else if (strength === 3) {
+
+                fill.style.width = "75%";
+                text.textContent = "Good password";
+
+            } else {
+
+                fill.style.width = "100%";
+                text.textContent = "Strong password";
+
+            }
+
+        }
+
+    </script>
+
+</body>
+
+</html>

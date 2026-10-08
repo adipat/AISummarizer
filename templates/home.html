@@ -1,0 +1,560 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>AI Study Assistant</title>
+
+    <link rel="stylesheet"
+          href="{% static 'css/style.css' %}?v=60">
+
+</head>
+
+
+<body class="home-page">
+
+
+    <!-- =========================
+         NAVBAR
+    ========================== -->
+
+    <nav class="home-navbar">
+
+        <div class="home-logo">
+
+            <span class="logo-icon">✦</span>
+
+            <span>AI Study Assistant</span>
+
+        </div>
+
+
+        <div class="home-nav-links">
+
+            <a href="{% url 'login' %}">
+                Login
+            </a>
+
+            <a href="{% url 'register' %}" class="nav-register">
+                Register
+            </a>
+
+        </div>
+
+    </nav>
+
+
+
+    <!-- =========================
+         HERO SECTION
+    ========================== -->
+
+    <section class="hero-section">
+
+        <div class="hero-content">
+
+
+            <div class="hero-badge">
+                ✨ AI-Powered Learning
+            </div>
+
+
+            <h1>
+                Study Smarter.<br>
+                <span>Learn Faster.</span>
+            </h1>
+
+
+            <p class="hero-description">
+                Upload your study notes and let AI turn lengthy
+                documents into clear, easy-to-understand summaries.
+            </p>
+
+
+            <div class="hero-buttons">
+
+                <a href="{% url 'register' %}"
+                   class="primary-hero-btn">
+
+                    Get Started
+                    <span>→</span>
+
+                </a>
+
+
+                <a href="{% url 'login' %}"
+                   class="secondary-hero-btn">
+
+                    Login
+
+                </a>
+
+            </div>
+
+
+            <div class="hero-note">
+                PDF &nbsp;•&nbsp; DOCX &nbsp;•&nbsp; TXT
+            </div>
+
+
+        </div>
+
+
+
+        <!-- AI Visual -->
+
+        <div class="hero-visual">
+
+            <div class="ai-glow"></div>
+
+
+            <div class="ai-card">
+
+
+                <div class="ai-card-top">
+
+                    <div class="ai-card-icon">
+                        ✦
+                    </div>
+
+
+                    <div>
+
+                        <strong>
+                            AI Summary
+                        </strong>
+
+                        <small>
+                            Generated instantly
+                        </small>
+
+                    </div>
+
+                </div>
+
+
+                <div class="ai-line long"></div>
+
+                <div class="ai-line medium"></div>
+
+                <div class="ai-line short"></div>
+
+
+                <div class="ai-summary-box">
+
+                    <span>✓</span>
+
+                    Important concepts identified
+
+                </div>
+
+
+                <div class="ai-summary-box">
+
+                    <span>✓</span>
+
+                    Key points simplified
+
+                </div>
+
+
+                <div class="ai-summary-box">
+
+                    <span>✓</span>
+
+                    Study-ready summary
+
+                </div>
+
+
+            </div>
+
+
+            <div class="floating-card floating-card-one">
+                📄 Notes
+            </div>
+
+
+            <div class="floating-card floating-card-two">
+                🧠 AI
+            </div>
+
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =========================
+         FEATURES SECTION
+    ========================== -->
+
+    <section class="features-section">
+
+
+        <div class="section-heading">
+
+
+            <div class="section-label">
+                WHAT YOU CAN DO
+            </div>
+
+
+            <h2>
+                Everything you need to study smarter
+            </h2>
+
+
+            <p>
+                Turn your study material into organized,
+                easy-to-understand knowledge.
+            </p>
+
+
+        </div>
+
+
+
+        <div class="features-grid">
+
+
+            <!-- =========================
+                 UPLOAD NOTES
+            ========================== -->
+
+            
+            <a href="{% url 'login' %}" class="feature-card">                   
+
+
+                <div class="feature-icon">
+                    📄
+                </div>
+
+
+                <h3>
+                    Upload Notes
+                </h3>
+
+
+                <p>
+                    Upload your PDF, DOCX or TXT study
+                    materials in just a few clicks.
+                </p>
+
+
+                <span class="feature-link">
+                    Upload Notes →
+                </span>
+
+
+            </a>
+
+
+
+            <!-- =========================
+                 AI SUMMARIES
+            ========================== -->
+
+            <a href="{% url 'login' %}" class="feature-card">    
+
+
+                <div class="feature-icon">
+                    🤖
+                </div>
+
+
+                <h3>
+                    AI Summaries
+                </h3>
+
+
+                <p>
+                    Generate clear and student-friendly
+                    summaries using AI.
+                </p>
+
+
+                <span class="feature-link">
+                    Generate Summary →
+                </span>
+
+
+            </a>
+
+
+
+            <!-- =========================
+                 COMPARE RESULTS
+            ========================== -->
+
+          
+            <a href="{% url 'login' %}" class="feature-card">
+
+
+                <div class="feature-icon">
+                    ⚖
+                </div>
+
+
+                <h3>
+                    Compare Results
+                </h3>
+
+
+                <p>
+                    Compare summaries generated by
+                    different AI models.
+                </p>
+
+
+                <span class="feature-link">
+                    Compare Summaries →
+                </span>
+
+
+            </a>
+
+
+
+            <!-- =========================
+                 SAVE & DOWNLOAD
+            ========================== -->
+
+            
+        <a href="{% url 'login' %}" class="feature-card">
+
+
+                <div class="feature-icon">
+                    💾
+                </div>
+
+
+                <h3>
+                    Save & Download
+                </h3>
+
+
+                <p>
+                    Save useful summaries and download
+                    them whenever you need.
+                </p>
+
+
+                <span class="feature-link">
+                    View Saved Summaries →
+                </span>
+
+
+            </a>
+
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =========================
+         HOW IT WORKS
+    ========================== -->
+
+    <section class="steps-section">
+
+
+        <div class="section-heading">
+
+
+            <div class="section-label">
+                HOW IT WORKS
+            </div>
+
+
+            <h2>
+                From notes to knowledge in 3 steps
+            </h2>
+
+
+        </div>
+
+
+
+        <div class="steps-container">
+
+
+            <!-- STEP 1 -->
+
+            <div class="step">
+
+
+                <div class="step-number">
+                    01
+                </div>
+
+
+                <div>
+
+                    <h3>
+                        Upload
+                    </h3>
+
+                    <p>
+                        Upload your study notes or documents.
+                    </p>
+
+                </div>
+
+
+            </div>
+
+
+
+            <div class="step-line"></div>
+
+
+
+            <!-- STEP 2 -->
+
+            <div class="step">
+
+
+                <div class="step-number">
+                    02
+                </div>
+
+
+                <div>
+
+                    <h3>
+                        Generate
+                    </h3>
+
+                    <p>
+                        Let AI analyze and summarize your notes.
+                    </p>
+
+                </div>
+
+
+            </div>
+
+
+
+            <div class="step-line"></div>
+
+
+
+            <!-- STEP 3 -->
+
+            <div class="step">
+
+
+                <div class="step-number">
+                    03
+                </div>
+
+
+                <div>
+
+                    <h3>
+                        Learn
+                    </h3>
+
+                    <p>
+                        Read, compare, save and study smarter.
+                    </p>
+
+                </div>
+
+
+            </div>
+
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =========================
+         CTA SECTION
+    ========================== -->
+
+    <section class="cta-section">
+
+
+        <div class="cta-content">
+
+
+            <div class="cta-icon">
+                ✦
+            </div>
+
+
+            <h2>
+                Ready to study smarter?
+            </h2>
+
+
+            <p>
+                Create your account and start transforming
+                your study notes with AI.
+            </p>
+
+
+            <a href="{% url 'register' %}"
+               class="cta-button">
+
+                Create Your Account
+
+                <span>→</span>
+
+            </a>
+
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =========================
+         FOOTER
+    ========================== -->
+
+    <footer class="home-footer">
+
+
+        <div>
+
+            <strong>
+                AI Study Assistant
+            </strong>
+
+            <span>
+                •
+            </span>
+
+            Learn smarter with AI.
+
+        </div>
+
+
+        <div>
+
+            © 2026 AI Study Assistant
+
+        </div>
+
+
+    </footer>
+
+
+</body>
+
+</html>

@@ -1,0 +1,235 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Upload Notes - AI Study Assistant</title>
+
+    <link rel="stylesheet"
+          href="{% static 'css/style.css' %}?v=20">
+</head>
+
+<body class="upload-page">
+
+    <!-- NAVBAR -->
+
+    <nav class="upload-navbar">
+
+        <div class="upload-brand">
+            AI Study Assistant
+        </div>
+
+        <div class="upload-nav-links">
+
+            <a href="{% url 'dashboard' %}">
+                Dashboard
+            </a>
+
+            <a href="{% url 'profile' %}">
+                Profile
+            </a>
+
+            <a href="{% url 'logout' %}">
+                Logout
+            </a>
+
+        </div>
+
+    </nav>
+
+
+    <!-- MAIN -->
+
+    <main class="upload-container">
+
+        <div class="upload-header">
+
+            <span class="upload-badge">
+                📚 Study Materials
+            </span>
+
+            <h1>
+                Upload Your Notes
+            </h1>
+
+            <p>
+                Upload your study material and let AI turn it
+                into clear, easy-to-understand summaries.
+            </p>
+
+        </div>
+
+
+        <!-- FORM CARD -->
+
+        <div class="upload-card">
+
+            <form method="POST"
+                  enctype="multipart/form-data">
+
+                {% csrf_token %}
+
+
+                <!-- TITLE -->
+
+                <div class="upload-field">
+
+                    <label for="note-title">
+                        Note Title
+                    </label>
+
+                    <input
+                        type="text"
+                        id="note-title"
+                        name="title"
+                        placeholder="e.g. Software Testing Unit 1"
+                        required
+                    >
+
+                    <span class="field-hint">
+                        Give your notes a meaningful name.
+                    </span>
+
+                </div>
+
+
+                <!-- FILE -->
+
+                <div class="upload-field">
+
+                    <label>
+                        Study Material
+                    </label>
+
+                    <label for="note-file"
+                           class="file-drop-area">
+
+                        <div class="upload-icon">
+                            ↑
+                        </div>
+
+                        <div class="upload-file-text">
+
+                            <strong>
+                                Choose a file to upload
+                            </strong>
+
+                            <span>
+                                PDF, DOCX or TXT
+                            </span>
+
+                        </div>
+
+                        <span class="browse-button">
+                            Browse
+                        </span>
+
+                    </label>
+
+                    <input
+                        type="file"
+                        id="note-file"
+                        name="uploaded_file"
+                        accept=".pdf,.docx,.txt"
+                        required
+                    >
+
+                    <div class="file-info">
+
+                        <span>✓ PDF</span>
+                        <span>✓ DOCX</span>
+                        <span>✓ TXT</span>
+
+                    </div>
+
+                </div>
+
+
+                <!-- INFO -->
+
+                <div class="upload-info-box">
+
+                    <div class="info-icon">
+                        ✨
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            What happens next?
+                        </strong>
+
+                        <p>
+                            Your file will be processed and the
+                            extracted text will be ready for
+                            Gemini and OpenAI summarization.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <!-- BUTTON -->
+
+                <button type="submit"
+                        class="upload-submit">
+
+                    <span>↑</span>
+
+                    Upload Notes
+
+                </button>
+
+
+                <a href="{% url 'dashboard' %}"
+                   class="cancel-upload">
+
+                    Cancel
+
+                </a>
+
+            </form>
+
+        </div>
+
+    </main>
+
+
+    <!-- FILE NAME SCRIPT -->
+
+    <script>
+
+        const fileInput =
+            document.getElementById("note-file");
+
+        const fileText =
+            document.querySelector(".upload-file-text strong");
+
+        const fileSubtext =
+            document.querySelector(".upload-file-text span");
+
+
+        fileInput.addEventListener("change", function () {
+
+            if (this.files.length > 0) {
+
+                const file = this.files[0];
+
+                fileText.textContent = file.name;
+
+                fileSubtext.textContent =
+                    (file.size / (1024 * 1024)).toFixed(2)
+                    + " MB";
+
+            }
+
+        });
+
+    </script>
+
+</body>
+</html>
