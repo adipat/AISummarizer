@@ -62,25 +62,25 @@ def register(request):
         # Username validation
         # -------------------------
 
-        if len(username) < 8:
+        if len(username) < 3:
             messages.error(
                 request,
-                "Username must be at least 8 characters long."
+                "Username must be at least 3 characters long."
             )
             return redirect("register")
 
-        if len(username) > 20:
+        if len(username) > 30:
             messages.error(
                 request,
-                "Username cannot be more than 20 characters."
+                "Username cannot be more than 30 characters."
             )
             return redirect("register")
 
-        if not re.match(r"^(?=.*[A-Za-z])[A-Za-z0-9_]+$", username):
+        if not re.match(r"^[A-Za-z0-9_]+$", username):
             messages.error(
-            request,
-            "Username must contain at least one letter and can contain only letters, numbers and underscore."
-             )
+                request,
+                "Username can contain only letters, numbers and underscore."
+            )
             return redirect("register")
 
         if User.objects.filter(username__iexact=username).exists():
@@ -196,6 +196,130 @@ def login_view(request):
         messages.error(request, 'Invalid username or password.')
 
     return render(request, 'login.html')
+
+
+def forgot_password(request):
+    if request.method == "POST":
+        username = request.POST.get("username", "").strip()
+        email = request.POST.get("email", "").strip().lower()
+        new_password = request.POST.get("new_password", "")
+        confirm_password = request.POST.get("confirm_password", "")
+
+        if not username or not email:
+            messages.error(
+                request,
+                "Please enter both your username and registered email address."
+            )
+            return render(
+                request,
+                "forgot_password.html",
+                {"username": username, "email": email}
+            )
+
+        try:
+            user = User.objects.get(
+                username__iexact=username,
+                email__iexact=email
+            )
+        except User.DoesNotExist:
+            messages.error(
+                request,
+                "No account was found with that username and email combination."
+            )
+            return render(
+                request,
+                "forgot_password.html",
+                {"username": username, "email": email}
+            )
+
+        if len(new_password) < 8:
+            messages.error(
+                request,
+                "Password must be at least 8 characters long."
+            )
+            return render(
+                request,
+                "forgot_password.html",
+                {"username": username, "email": email}
+            )
+
+        if not re.search(r"[A-Z]", new_password):
+            messages.error(
+                request,
+                "Password must contain at least one uppercase letter."
+            )
+            return render(
+                request,
+                "forgot_password.html",
+                {"username": username, "email": email}
+            )
+
+        if not re.search(r"[a-z]", new_password):
+            messages.error(
+                request,
+                "Password must contain at least one lowercase letter."
+            )
+            return render(
+                request,
+                "forgot_password.html",
+                {"username": username, "email": email}
+            )
+
+        if not re.search(r"[0-9]", new_password):
+            messages.error(
+                request,
+                "Password must contain at least one number."
+            )
+            return render(
+                request,
+                "forgot_password.html",
+                {"username": username, "email": email}
+            )
+
+        if not re.search(r"[^A-Za-z0-9]", new_password):
+            messages.error(
+                request,
+                "Password must contain at least one special character."
+            )
+            return render(
+                request,
+                "forgot_password.html",
+                {"username": username, "email": email}
+            )
+
+        if new_password != confirm_password:
+            messages.error(
+                request,
+                "New passwords do not match."
+            )
+            return render(
+                request,
+                "forgot_password.html",
+                {"username": username, "email": email}
+            )
+
+        if user.check_password(new_password):
+            messages.error(
+                request,
+                "New password must be different from your current password."
+            )
+            return render(
+                request,
+                "forgot_password.html",
+                {"username": username, "email": email}
+            )
+
+        user.set_password(new_password)
+        user.save()
+
+        messages.success(
+            request,
+            "Your password has been reset successfully! Please login with your new password."
+        )
+        return redirect("login")
+
+    return render(request, "forgot_password.html")
+
 
 @login_required
 def dashboard(request):
@@ -581,31 +705,31 @@ def edit_profile(request):
         email = request.POST.get("email", "").strip().lower()
 
         # Username length
-        if len(username) < 8:
+        if len(username) < 3:
 
             messages.error(
                 request,
-                "Username must be at least 8 characters long."
+                "Username must be at least 3 characters long."
             )
 
-            return redirect("edit_profile")
+            return render(request, "edit_profile.html", {"username": username, "email": email})
 
-        if len(username) > 20:
+        if len(username) > 30:
 
             messages.error(
                 request,
-                "Username cannot be more than 20 characters."
+                "Username cannot be more than 30 characters."
             )
 
-            return redirect("edit_profile")
+            return render(request, "edit_profile.html", {"username": username, "email": email})
 
         # Username characters
-        if not re.match(r"^(?=.*[A-Za-z])[A-Za-z0-9_]+$", username):
-         messages.error(
-        request,
-        "Username must contain at least one letter and can contain only letters, numbers and underscore."
-        )
-         return redirect("edit_profile")
+        if not re.match(r"^[A-Za-z0-9_]+$", username):
+            messages.error(
+                request,
+                "Username can contain only letters, numbers and underscore."
+            )
+            return render(request, "edit_profile.html", {"username": username, "email": email})
 
         # Check duplicate username
         if User.objects.filter(
@@ -619,7 +743,7 @@ def edit_profile(request):
                 "Username already exists."
             )
 
-            return redirect("edit_profile")
+            return render(request, "edit_profile.html", {"username": username, "email": email})
 
         # Validate email
         try:
@@ -633,7 +757,7 @@ def edit_profile(request):
                 "Please enter a valid email address."
             )
 
-            return redirect("edit_profile")
+            return render(request, "edit_profile.html", {"username": username, "email": email})
 
         # Check duplicate email
         if User.objects.filter(
@@ -647,7 +771,7 @@ def edit_profile(request):
                 "This email is already registered."
             )
 
-            return redirect("edit_profile")
+            return render(request, "edit_profile.html", {"username": username, "email": email})
 
         request.user.username = username
         request.user.email = email
@@ -663,7 +787,11 @@ def edit_profile(request):
 
     return render(
         request,
-        "edit_profile.html"
+        "edit_profile.html",
+        {
+            "username": request.user.username,
+            "email": request.user.email
+        }
     )
 @login_required
 def change_password(request):

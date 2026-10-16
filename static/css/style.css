@@ -6458,6 +6458,12 @@ button {
     line-height: 1.4;
 }
 
+.login-message.success {
+    background: #ecfdf3;
+    border-color: #abefc6;
+    color: #067647;
+}
+
 
 /* -------------------------
    DIVIDER
