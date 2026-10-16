@@ -24,13 +24,15 @@
 - **💾 Saved Summaries & Downloads:**
   - Save favorite summaries to your personal collection.
   - Export summaries directly as `.txt` files or download the original uploaded documents.
-- **🔐 User Authentication & Profile Management:**
-  - Secure registration and login system.
-  - Profile statistics (number of notes uploaded, saved summaries).
-  - Profile update and secure password change workflows.
+- **🔐 User Authentication, Security & Account Management:**
+  - **Secure Registration & Login:** Robust input validation and session management.
+  - **Forgot Password Recovery:** Instant, reliable password recovery verified via username and registered email address (eliminating fragile external SMTP dependencies).
+  - **Edit Profile:** Update username and email with real-time validation and clear success/error alert banners.
+  - **Change Password:** Secure in-app password change with complexity requirements (uppercase, lowercase, numbers, special characters).
+  - **Profile Dashboard:** Activity statistics (number of uploaded notes, saved summaries, and member since date).
 - **⚡ Production Ready:**
   - Pre-configured with **WhiteNoise** for high-performance static file serving and **Gunicorn** WSGI server.
-  - Fully configured for deployment on **Render**.
+  - Fully configured for automated continuous deployment on **Render**.
 
 ---
 
@@ -49,24 +51,44 @@
 
 ```text
 AISummarizer/
-├── config/                  # Django project settings and URLs
-│   ├── settings.py          # Environment-aware settings (WhiteNoise, CSRF, Hosts)
-│   ├── urls.py              # Main URL routing
-│   ├── wsgi.py              # WSGI entry point for Gunicorn
-│   ├── test_gemini.py       # Gemini API verification script
-│   └── test_openai.py       # Groq/OpenAI verification script
-├── study_app/               # Main application
-│   ├── models.py            # UploadedNote, Summary, SavedSummary
-│   ├── views.py             # Auth, note upload, AI summarization logic
-│   ├── urls.py              # App-level routing
-│   └── admin.py             # Django admin registration
-├── templates/               # HTML templates
-├── static/                  # CSS styling and static assets
-├── build.sh                 # Render build script (pip, collectstatic, migrate)
-├── render.yaml              # Render blueprint deployment file
-├── requirements.txt         # Project dependencies
-├── .env.example             # Environment variable template
-└── README.md                # Project documentation
+├── config/                          # Django project configuration
+│   ├── settings.py                  # Production & development settings (WhiteNoise, CSRF, Hosts)
+│   ├── urls.py                      # Root URL routing
+│   ├── wsgi.py                      # WSGI entry point for Gunicorn
+│   ├── asgi.py                      # ASGI entry point
+│   ├── test_gemini.py               # Gemini API verification script
+│   └── test_openai.py               # Groq/OpenAI verification script
+├── study_app/                       # Main application
+│   ├── models.py                    # Models: UploadedNote, Summary, SavedSummary
+│   ├── views.py                     # Auth, profile, note upload, AI summarization logic
+│   ├── urls.py                      # Application route definitions
+│   ├── admin.py                     # Django admin model registration
+│   └── apps.py                      # App configuration
+├── templates/                       # Frontend HTML templates
+│   ├── home.html                    # Landing page
+│   ├── login.html                   # Login page with "Forgot password?" link
+│   ├── register.html                # User registration with password strength meter
+│   ├── forgot_password.html         # Instant account recovery & password reset
+│   ├── dashboard.html               # Main dashboard (note search, filters, sorting)
+│   ├── upload_notes.html            # Document upload page (PDF, DOCX, TXT)
+│   ├── view_note.html               # Note text viewer & download
+│   ├── ai_summary.html              # AI-generated summary presentation
+│   ├── compare_summaries.html       # Side-by-side Gemini vs Groq comparison
+│   ├── saved_summaries.html         # Saved summary library
+│   ├── profile.html                 # Profile view with stats & account settings
+│   ├── edit_profile.html            # Edit username & email with alert feedback
+│   └── change_password.html         # Change account password with security checks
+├── static/                          # Static assets
+│   └── css/
+│       ├── style.css                # Global and component styling
+│       ├── profile.css              # Profile screen styling
+│       └── register.css             # Registration page styling
+├── build.sh                         # Render build script (pip, collectstatic, migrate)
+├── render.yaml                      # Render Blueprint deployment configuration
+├── requirements.txt                 # Python package dependencies
+├── .env.example                     # Environment variable template
+├── .gitignore                       # Git ignore rules (.env, database, media)
+└── README.md                        # Project documentation
 ```
 
 ---
@@ -116,16 +138,16 @@ Open your browser and navigate to `http://127.0.0.1:8000/`.
 
 ## ☁️ Deployment on Render
 
-This project is optimized for one-click deployment on [Render](https://render.com):
+This project is optimized for automated deployment on [Render](https://render.com):
 
 1. Fork or push this repository to GitHub.
-2. In the Render Dashboard, create a **New Web Service** and select this repo.
-3. Use the following configuration:
+2. In the Render Dashboard, create a **New Web Service** and connect this repo.
+3. Configure settings:
    - **Environment:** `Python 3`
    - **Build Command:** `./build.sh`
    - **Start Command:** `gunicorn config.wsgi:application`
    - **Plan:** `Free`
-4. Set the following **Environment Variables**:
+4. Add the following **Environment Variables**:
    - `PYTHON_VERSION`: `3.11.9`
    - `DEBUG`: `False`
    - `GEMINI_API_KEY`: *(Your Google Gemini API Key)*
